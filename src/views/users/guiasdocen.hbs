@@ -1,0 +1,39 @@
+<div class="guia1">
+  <div class="content-guia1">
+    <h1>Sistema de Gestión de estudiantes</h1>
+    <h2>Listado de Guías entregadas por estudiantes</h2>
+    <form method="GET" action="/guiasestudiantes">
+      <button type="submit">Realizar Consulta</button>
+    </form>
+    <div style="overflow-x: auto; width: 100%;">
+      <table style="width: 100%; white-space: nowrap; font-size: 16px;">
+        <thead>
+          <tr>
+            <th>ID de guia</th>
+            <th>Nombres</th>
+            <th>Carrera</th>
+            <th>Asignatura</th>
+            <th>Grupo</th>
+            <th>Acciones</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each consultaguiasestu}}
+          <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.nombre}}</td>
+            <td>{{this.carrera}}</td>
+            <td>{{this.asignatura}}</td>
+            <td>{{this.grupo}}</td>
+            <td><a href="/descargarguia/{{this._id}}">Descargar Guía</a></td>
+            <td><a href="//{{this._id}}">Visualizar y Editar</a></td>
+
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      
+
+    </div>
+  </div>

@@ -1,0 +1,153 @@
+<div class="guia1">
+    <div class="content-guia1">
+        <h1>Formulario Dinámico</h1>
+
+        <form id="dynamic-form">
+            <div id="questions-container"></div>
+            <button type="button" onclick="addTextQuestion()">Agregar pregunta de texto</button>
+            <button type="button" onclick="addMultipleChoiceQuestion()">Agregar pregunta de selección múltiple</button>
+            <button type="submit">Enviar formulario</button>
+        </form>
+
+        <script>
+            var questionCounter = 0;
+
+            function addTextQuestion() {
+                var container = document.getElementById("questions-container");
+                var questionDiv = document.createElement("div");
+                questionDiv.className = "question";
+
+                var questionLabel = document.createElement("label");
+                questionLabel.textContent = "Pregunta de texto " + (questionCounter + 1) + ":";
+                questionDiv.appendChild(questionLabel);
+
+                var questionInput = document.createElement("input");
+                questionInput.type = "text";
+                questionInput.name = "text_question_" + questionCounter;
+                questionDiv.appendChild(questionInput);
+
+                var deleteButton = document.createElement("button");
+                deleteButton.type = "button";
+                deleteButton.textContent = "Eliminar pregunta";
+                deleteButton.onclick = function () {
+                    questionDiv.remove();
+                    renumberQuestions();
+                };
+                questionDiv.appendChild(deleteButton);
+
+                container.appendChild(questionDiv);
+
+                questionCounter++;
+                renumberQuestions();
+            }
+
+            function addMultipleChoiceQuestion() {
+                var container = document.getElementById("questions-container");
+                var questionDiv = document.createElement("div");
+                questionDiv.className = "question";
+
+                var questionLabel = document.createElement("label");
+                questionLabel.textContent = "Pregunta de selección múltiple " + (questionCounter + 1) + ":";
+                questionDiv.appendChild(questionLabel);
+
+                var questionInput = document.createElement("input");
+                questionInput.type = "text";
+                questionInput.name = "multiple_choice_question_" + questionCounter + "_question";
+                questionInput.placeholder = "Ingrese la pregunta";
+                questionDiv.appendChild(questionInput);
+
+                var optionInputsContainer = document.createElement("div");
+                optionInputsContainer.className = "options-container";
+
+                var optionCounter = 1;
+
+                var addOptionInput = function () {
+                    var optionInput = document.createElement("input");
+                    optionInput.type = "text";
+                    optionInput.name = "multiple_choice_question_" + questionCounter + "_option_" + optionCounter;
+                    optionInput.placeholder = "Opción " + optionCounter;
+                    optionInputsContainer.appendChild(optionInput);
+
+                    var optionCorrectInput = document.createElement("input");
+                    optionCorrectInput.type = "radio";
+                    optionCorrectInput.name = "multiple_choice_question_" + questionCounter + "_correct_option";
+                    optionCorrectInput.value = optionCounter.toString();
+                    optionInputsContainer.appendChild(optionCorrectInput);
+
+                    var optionLabel = document.createElement("label");
+                    optionLabel.textContent = "Correcta";
+                    optionInputsContainer.appendChild(optionLabel);
+
+                    var deleteOptionButton = document.createElement("button");
+                    deleteOptionButton.type = "button";
+                    deleteOptionButton.textContent = "Eliminar opción";
+                    deleteOptionButton.onclick = function () {
+                        optionInput.remove();
+                        optionCorrectInput.remove();
+                        optionLabel.remove();
+                        deleteOptionButton.remove();
+                        renumberOptions();
+                    };
+                    optionInputsContainer.appendChild(deleteOptionButton);
+
+                    optionCounter++;
+                };
+
+                var addButton = document.createElement("button");
+                addButton.type = "button";
+                addButton.textContent = "Agregar opción";
+                addButton.onclick = function () {
+                    addOptionInput();
+                    renumberOptions();
+                };
+                questionDiv.appendChild(addButton);
+
+                var deleteButton = document.createElement("button");
+                deleteButton.type = "button";
+                deleteButton.textContent = "Eliminar pregunta";
+                deleteButton.onclick = function () {
+                    questionDiv.remove();
+                    renumberQuestions();
+                };
+                questionDiv.appendChild(deleteButton);
+
+                questionDiv.appendChild(optionInputsContainer);
+
+                container.appendChild(questionDiv);
+
+                questionCounter++;
+                renumberQuestions();
+            }
+
+            function renumberQuestions() {
+                var questionDivs = document.getElementsByClassName("question");
+                for (var i = 0; i < questionDivs.length; i++) {
+                    var questionLabel = questionDivs[i].getElementsByTagName("label")[0];
+                    questionLabel.textContent = "Pregunta de selección múltiple " + (i + 1) + ":";
+                }
+            }
+
+            function renumberOptions() {
+                var optionInputsContainers = document.getElementsByClassName("options-container");
+                for (var i = 0; i < optionInputsContainers.length; i++) {
+                    var optionInputs = optionInputsContainers[i].getElementsByTagName("input");
+                    var optionLabels = optionInputsContainers[i].getElementsByTagName("label");
+                    var optionCounter = 1;
+                    for (var j = 0; j < optionInputs.length; j++) {
+                        if (optionInputs[j].name.includes("_option_")) {
+                            optionInputs[j].name = "multiple_choice_question_" + i + "_option_" + optionCounter;
+                            optionInputs[j].placeholder = "Opción " + optionCounter;
+                            optionCounter++;
+                        }
+                    }
+                    if (optionLabels.length > 0) {
+                        for (var k = 0; k < optionLabels.length; k++) {
+                            optionLabels[k].textContent = "Correcta";
+                        }
+                    }
+                }
+            }
+
+        </script>
+    </div>
+</div>
